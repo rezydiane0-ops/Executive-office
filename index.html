@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cdn.jsdelivr.net 'sha256-v4Nkj78L19F2nvVhTtdXq4TAGZdnItYfaw6PV5iqLJ8='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://*.supabase.co wss://*.supabase.co; object-src 'none'; base-uri 'self'">
+<title>Executive Office Intelligence System</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:wght@500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#0B1F3A;--navy2:#13335C;--ink:#16253B;--mute:#5B6B82;--line:#D5E0EE;--sky:#E6F0FB;--sky2:#F4F8FD;--steel:#3A6EA5;--white:#fff;--warn:#8A5A00;--warnbg:#FFF6E0}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{font:16px/1.55 "IBM Plex Sans",system-ui,sans-serif;color:var(--ink);background:var(--white)}
+h1,h2,h3{font-family:"Source Serif 4",Georgia,serif;font-weight:600;line-height:1.15;margin:0}
+a{color:var(--steel)}
+:focus-visible{outline:3px solid var(--steel);outline-offset:2px}
+.btn{display:inline-block;padding:.65rem 1.1rem;border-radius:4px;border:1px solid var(--navy);background:var(--navy);color:#fff;font:500 .95rem inherit;text-decoration:none;cursor:pointer}
+.btn.alt{background:transparent;color:var(--navy)}
+/* portfolio */
+.site-head{display:flex;justify-content:space-between;align-items:center;padding:1rem 5vw;border-bottom:1px solid var(--line)}
+.brand{font:600 1.05rem "Source Serif 4",serif;color:var(--navy)}
+.hero{background:var(--navy);color:#fff;padding:clamp(3rem,9vw,7rem) 5vw}
+.hero h1{font-size:clamp(2.2rem,6vw,4.4rem);max-width:15ch}
+.hero p{max-width:56ch;color:#C8D8EE;margin:1.25rem 0 2rem;font-size:1.1rem}
+.hero .btn{background:#fff;color:var(--navy);border-color:#fff}
+.hero .btn.alt{background:transparent;color:#fff;border-color:#7FA3CF;margin-left:.5rem}
+.sec{padding:clamp(2.5rem,6vw,4.5rem) 5vw;max-width:1100px;margin:auto}
+.sec h2{font-size:1.8rem;margin-bottom:1.5rem}
+.stages{display:grid;gap:0;border-top:2px solid var(--navy)}
+.stage{display:grid;grid-template-columns:8rem 1fr;gap:1rem;padding:1rem 0;border-bottom:1px solid var(--line)}
+.stage b{font:600 1.2rem "Source Serif 4",serif;color:var(--navy)}
+.stage span{color:var(--mute)}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:2rem}
+.grid2 h3{font-size:1.15rem;margin-bottom:.4rem}
+.note{background:var(--warnbg);color:var(--warn);padding:.7rem 1rem;border-left:4px solid var(--warn);font-size:.9rem}
+footer{padding:2rem 5vw;border-top:1px solid var(--line);color:var(--mute);font-size:.9rem}
+/* app */
+#app{display:none;min-height:100vh;grid-template-columns:15.5rem 1fr}
+body.in-app #site{display:none}
+body.in-app #app{display:grid}
+aside{background:var(--navy);color:#C8D8EE;padding:1rem .75rem;position:sticky;top:0;height:100vh;overflow:auto}
+aside .brand{color:#fff;padding:.25rem .5rem 1rem;display:block}
+aside nav a{display:block;padding:.5rem .6rem;border-radius:4px;color:#C8D8EE;text-decoration:none;font-size:.93rem}
+aside nav a[aria-current=page]{background:var(--navy2);color:#fff}
+aside nav a:hover{background:var(--navy2)}
+main{padding:1.5rem clamp(1rem,4vw,2.5rem);background:var(--sky2);min-width:0}
+.top{display:flex;justify-content:space-between;align-items:center;gap:1rem;margin-bottom:1rem;flex-wrap:wrap}
+.menu{display:none}
+.panel{background:#fff;border:1px solid var(--line);border-radius:6px;padding:1.5rem;margin-top:1rem}
+.empty{text-align:center;padding:2.5rem 1rem;color:var(--mute)}
+.empty h3{color:var(--ink);font-size:1.2rem;margin-bottom:.4rem}
+.tag{display:inline-block;padding:.1rem .55rem;border-radius:99px;background:var(--sky);color:var(--navy2);font-size:.8rem;margin:.15rem .2rem .15rem 0}
+table{width:100%;border-collapse:collapse;font-size:.92rem}
+th,td{text-align:left;padding:.55rem .6rem;border-bottom:1px solid var(--line);vertical-align:top}
+.scroll{overflow-x:auto}
+@media(max-width:800px){
+ #app{grid-template-columns:1fr}
+ aside{position:fixed;inset:0 25% 0 0;z-index:5;height:100%;transform:translateX(-100%);transition:transform .2s}
+ aside.open{transform:none}
+ .menu{display:inline-block}
+ .stage{grid-template-columns:1fr;gap:.2rem}
+}
+@media(prefers-reduced-motion:reduce){aside{transition:none}}
+</style>
+</head>
+<body>
+<div id="site">
+ <header class="site-head"><span class="brand">[Your Name], Executive Virtual Assistant</span><a class="btn alt" href="#/overview" data-enter>Open workspace</a></header>
+ <section class="hero">
+  <h1>Executive documents you can send without a second look.</h1>
+  <p>CEO reporting, executive documentation, and operational coordination, checked through a five-stage review before anything reaches your desk.</p>
+  <a class="btn" href="#contact">Work with me</a><a class="btn alt" href="#/overview" data-enter>Open workspace</a>
+ </section>
+ <section class="sec">
+  <h2>How every document is reviewed</h2>
+  <div class="stages">
+   <div class="stage"><b>ATLAS</b><span>Drafts the document from the sources you supply.</span></div>
+   <div class="stage"><b>VERITY</b><span>Checks facts, calculations, completeness, and conflicts between sources.</span></div>
+   <div class="stage"><b>SENTINEL</b><span>Flags risks, missing information, and unclear accountability.</span></div>
+   <div class="stage"><b>FORGE</b><span>Applies supported revisions and records each change.</span></div>
+   <div class="stage"><b>ORION</b><span>Assesses readiness and flags what needs a human decision.</span></div>
+  </div>
+ </section>
+ <section class="sec">
+  <h2>Services</h2>
+  <div class="grid2">
+   <div><h3>CEO reporting</h3><p>Briefings, status reports, and board-ready summaries.</p></div>
+   <div><h3>Executive documentation</h3><p>Memos, minutes, policies, and action trackers.</p></div>
+   <div><h3>Operational coordination</h3><p>Deadlines, follow-ups, and cross-team tracking.</p></div>
+  </div>
+ </section>
+ <section class="sec" id="contact">
+  <h2>Contact</h2>
+  <p class="note">Placeholder: add your email, LinkedIn, and booking link here before publishing.</p>
+ </section>
+ <footer>Phase 1 build. Replace the bracketed text with your own details.</footer>
+</div>
+
+<div id="app">
+ <aside id="side"><span class="brand">Executive Office Intelligence</span><nav id="nav" aria-label="Workspace"></nav></aside>
+ <main>
+  <div class="top"><button class="btn alt menu" id="menu" aria-label="Toggle menu">Menu</button><h1 id="title" style="font-size:1.6rem"></h1><a href="#" class="btn alt" id="exit">Back to portfolio</a></div>
+  <p class="note" role="status">Preview mode. Sign-in, database, and permissions are not connected yet (Phase 2 and 3). Nothing here is saved, and the screens show empty states only.</p>
+  <div id="view"></div>
+ </main>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
+<script src="js/config.js"></script>
+<script>
+const empty=(h,p)=>`<div class="panel empty"><h3>${h}</h3><p>${p}</p></div>`;
+const states=["Draft","In Progress","Awaiting Review","Changes Requested","Approved","Archived"];
+const stateTags=`<p>${states.map(s=>`<span class="tag">${s}</span>`).join("")}</p>`;
+const views={
+ overview:["Overview",()=>empty("No activity yet","Create your first project in Phase 3. Counts and recent activity will appear here once records exist.")],
+ projects:["Projects",()=>empty("No projects","Projects group documents, tasks, and who can see them. Creating projects arrives in Phase 3.")],
+ documents:["Documents and reports",()=>stateTags+empty("No documents","Documents, versions, and source references will be stored here once the database is connected.")],
+ tasks:["Tasks",()=>empty("No tasks","Tasks with owners and deadlines arrive in Phase 3.")],
+ workflow:["AI documentation workflow",()=>`<div class="panel"><p>Each stage runs only when you start it, and you review before moving on. Stages are manual. None is connected to an AI service.</p><div class="scroll"><table><thead><tr><th>Stage</th><th>Status</th><th>Mode</th></tr></thead><tbody>${["ATLAS","VERITY","SENTINEL","FORGE","ORION"].map(s=>`<tr><td><b>${s}</b></td><td>Not started</td><td>Manual (Phase 4)</td></tr>`).join("")}</tbody></table></div></div>`],
+ review:["Review and approval queue",()=>empty("Nothing awaiting review","Items submitted for review appear here. Only users with approval permission will be able to approve.")],
+ team:["Team access",()=>`<div class="panel"><p>Planned roles. These are enforced on the server and database in Phase 2, not only in this interface.</p><div class="scroll"><table><thead><tr><th>Role</th><th>Access</th></tr></thead><tbody>
+ <tr><td><b>Owner / Administrator</b></td><td>Workspace settings, invitations, roles, revoking access, audit log, final approval and external sharing.</td></tr>
+ <tr><td><b>Executive / Manager</b></td><td>Assigned or shared projects only. Reviews and comments. Approves only if granted.</td></tr>
+ <tr><td><b>Team Member</b></td><td>Assigned projects and tasks. Uploads and edits within granted permissions. Submits work for review.</td></tr>
+ <tr><td><b>Viewer</b></td><td>Read-only access to records shared with them.</td></tr></tbody></table></div></div>`+empty("No team members","Invitations that you approve will be listed here.")],
+ notifications:["Notifications",()=>empty("No notifications","Review requests and deadline reminders will appear here.")],
+ audit:["Activity and audit log",()=>empty("No recorded events","Sign-ins, access changes, approvals, and document edits will be logged here once the database is connected.")],
+ settings:["Profile and settings",()=>empty("Sign-in required","Profile and security settings need authentication, added in Phase 2.")]
+};
+const nav=document.getElementById("nav"),view=document.getElementById("view"),title=document.getElementById("title"),side=document.getElementById("side");
+nav.innerHTML=Object.entries(views).map(([k,v])=>`<a href="#/${k}" data-k="${k}">${v[0]}</a>`).join("");
+function route(){
+ const m=location.hash.match(/^#\/(\w+)/);
+ document.body.classList.toggle("in-app",!!m);
+ if(!m)return;
+ const k=views[m[1]]?m[1]:"overview",v=views[k];
+ title.textContent=v[0];view.innerHTML=v[1]();
+ nav.querySelectorAll("a").forEach(a=>a.toggleAttribute("aria-current",a.dataset.k===k)||0);
+ nav.querySelectorAll("a").forEach(a=>{if(a.dataset.k===k)a.setAttribute("aria-current","page");else a.removeAttribute("aria-current")});
+ side.classList.remove("open");window.scrollTo(0,0);
+}
+document.getElementById("menu").onclick=()=>side.classList.toggle("open");
+document.getElementById("exit").onclick=e=>{e.preventDefault();history.pushState("",document.title,location.pathname);route()};
+addEventListener("hashchange",route);route();
+
+(()=>{
+const C=window.EOIS_CONFIG||{};
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const st=document.createElement('style');
+st.textContent=`#gate{position:fixed;inset:0;z-index:20;background:var(--navy);display:none;align-items:center;justify-content:center;padding:1rem}#gate .box{background:#fff;border-radius:6px;padding:1.75rem;width:min(26rem,100%)}#gate h2{font-size:1.5rem;margin-bottom:.75rem}#gate label{display:block;margin:.7rem 0 .2rem;font-size:.9rem}.fld{width:100%;padding:.55rem;border:1px solid var(--line);border-radius:4px;font:inherit}.row{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:1rem}.msg{margin-top:.8rem;font-size:.9rem;color:var(--warn)}.panel h3{margin:1rem 0 .5rem}`;
+document.head.append(st);
+const gate=document.createElement('div');gate.id='gate';gate.setAttribute('role','dialog');gate.setAttribute('aria-modal','true');document.body.append(gate);
+const sb=(C.SUPABASE_URL&&C.SUPABASE_ANON_KEY&&window.supabase)?window.supabase.createClient(C.SUPABASE_URL,C.SUPABASE_ANON_KEY):null;
+let me=null,wired=false;
+const inApp=()=>/^#\/\w+/.test(location.hash);
+const box=h=>{gate.innerHTML=`<div class="box">${h}</div>`;gate.style.display='flex'};
+const hide=()=>{gate.style.display='none'};
+const login=(m='')=>box(`<h2>Sign in</h2><label for="em">Email</label><input class="fld" id="em" type="email" autocomplete="email"><label for="pw">Password (12+ characters)</label><input class="fld" id="pw" type="password" autocomplete="current-password"><div class="row"><button class="btn" data-a="in">Sign in</button><button class="btn alt" data-a="up">Request access</button><button class="btn alt" data-a="rs">Reset password</button></div><p class="msg" role="status">${esc(m)}</p>`);
+async function check(){
+ if(!inApp()){hide();return}
+ if(!sb){box('<h2>Not configured</h2><p>Add your Supabase URL and anon key to js/config.js.</p>');return}
+ const {data:{session}}=await sb.auth.getSession();
+ if(!session){me=null;return login()}
+ const {data:p}=await sb.from('profiles').select('*').eq('id',session.user.id).maybeSingle();
+ me=p;
+ if(p&&p.status==='approved'){hide();ready();return}
+ const m={pending:'Your account is waiting for approval by the workspace owner.',suspended:'Your access is suspended.',revoked:'Your access has been revoked.',rejected:'Your request was not approved.'};
+ box(`<h2>No access</h2><p>${m[p&&p.status]||m.pending}</p><div class="row"><button class="btn" data-a="out">Sign out</button></div>`);
+}
+gate.addEventListener('click',async e=>{
+ const a=e.target.dataset.a;if(!a||!sb)return;
+ const em=(gate.querySelector('#em')||{}).value?.trim(),pw=(gate.querySelector('#pw')||{}).value;
+ const back=location.origin+location.pathname;
+ if(a==='out'){await sb.auth.signOut();return check()}
+ if(a==='in'){const r=await sb.auth.signInWithPassword({email:em,password:pw});return r.error?login('Sign-in failed. Check your details and confirm your email first.'):check()}
+ if(a==='up'){if(!pw||pw.length<12)return login('Use a password of at least 12 characters.');const r=await sb.auth.signUp({email:em,password:pw,options:{emailRedirectTo:back}});return login(r.error?'Could not create the account.':'Check your email to confirm. You still need owner approval to enter.')}
+ if(a==='rs'){if(!em)return login('Enter your email first.');await sb.auth.resetPasswordForEmail(em,{redirectTo:back});return login('If that email has an account, a reset link is on its way.')}
+ if(a==='np'){const r=await sb.auth.updateUser({password:pw});return r.error?box('<h2>Password not changed</h2><p>Use 12+ characters and try again from the reset link.</p>'):check()}
+});
+function ready(){
+ if(wired)return;wired=true;window.EOIS={sb,esc,get me(){return me}};
+ const b=document.querySelector('main .note');if(b)b.textContent='Signed in. The review queue and five-stage workflow arrive in Phase 4.';
+ views.settings=['Profile and settings',()=>`<div class="panel"><p>Signed in as <b>${esc(me.email)}</b> (${esc(me.role)}).</p><button class="btn alt" data-a="out2">Sign out</button></div>`];
+ views.team=['Team access',()=>{setTimeout(team,0);return '<div class="panel" id="tb">Loading…</div>'}];
+ dispatchEvent(new Event('eois-ready'));route();
+}
+async function team(){
+ const el=document.getElementById('tb');if(!el||!me)return;
+ if(me.role!=='owner'){el.innerHTML='<p>Only the workspace owner manages access.</p>';return}
+ const [a,b]=await Promise.all([sb.from('profiles').select('*').order('created_at'),sb.from('invitations').select('*').order('created_at',{ascending:false})]);
+ const R=['owner','executive','team_member','viewer'],S=['pending','approved','suspended','revoked','rejected'];
+ const o=(l,v)=>l.map(x=>`<option${x===v?' selected':''}>${x}</option>`).join('');
+ const now=Date.now();
+ el.innerHTML=`<h3>Invite someone</h3><div class="row"><input class="fld" id="ie" type="email" placeholder="Email" style="max-width:18rem"><select class="fld" id="ir" style="max-width:10rem">${o(R.slice(1),'viewer')}</select><button class="btn" data-a="inv">Create invitation</button></div><p class="msg">Valid for 7 days, one use. The person signs up with this exact email and confirms it. Anyone else who requests access waits as Pending.</p>
+ <h3>People</h3><div class="scroll"><table><thead><tr><th>Email</th><th>Role</th><th>Status</th><th></th></tr></thead><tbody>${(a.data||[]).map(p=>`<tr><td>${esc(p.email)}</td><td><select class="fld">${o(R,p.role)}</select></td><td><select class="fld">${o(S,p.status)}</select></td><td>${p.id===me.id?'You':`<button class="btn alt" data-a="save" data-id="${p.id}">Save</button>`}</td></tr>`).join('')}</tbody></table></div>
+ <h3>Invitations</h3>${(b.data||[]).length?`<div class="scroll"><table><tbody>${b.data.map(i=>{const s=i.used_at?'Used':i.revoked_at?'Revoked':new Date(i.expires_at)<now?'Expired':'Open';return`<tr><td>${esc(i.email)}</td><td>${esc(i.role)}</td><td>${s}</td><td>${s==='Open'?`<button class="btn alt" data-a="rev" data-id="${i.id}">Revoke</button>`:''}</td></tr>`}).join('')}</tbody></table></div>`:'<p>No invitations yet.</p>'}`;
+}
+document.addEventListener('click',async e=>{
+ const t=e.target.closest('[data-a]');if(!t||gate.contains(t)||!sb)return;
+ const a=t.dataset.a,tr=t.closest('tr');let r;
+ if(a==='out2'){await sb.auth.signOut();location.reload();return}
+ if(a==='inv')r=await sb.rpc('create_invitation',{p_email:document.getElementById('ie').value.trim(),p_role:document.getElementById('ir').value});
+ if(a==='save'){const s=tr.querySelectorAll('select');r=await sb.rpc('admin_set_access',{p_user:t.dataset.id,p_role:s[0].value,p_status:s[1].value})}
+ if(a==='rev')r=await sb.rpc('revoke_invitation',{p_id:t.dataset.id});
+ if(r&&r.error)alert('That action was not allowed or the input was invalid.');
+ if(r)team();
+});
+if(sb)sb.auth.onAuthStateChange((ev)=>{if(ev==='PASSWORD_RECOVERY')box('<h2>Set a new password</h2><label for="pw">New password (12+ characters)</label><input class="fld" id="pw" type="password" autocomplete="new-password"><div class="row"><button class="btn" data-a="np">Save password</button></div>');else if(ev==='SIGNED_OUT'||ev==='SIGNED_IN')check()});
+addEventListener('hashchange',check);check();
+})();
+
+(()=>{
+let started=false;
+function init(){
+ if(started||!window.EOIS)return;started=true;
+ const E=window.EOIS,sb=E.sb,esc=E.esc;
+ let cp=null,ed=null,q='',P=[],M=[],T=[];
+ const SL={draft:'Draft',in_progress:'In Progress',awaiting_review:'Awaiting Review',changes_requested:'Changes Requested',approved:'Approved',archived:'Archived'};
+ const tag=s=>`<span class="tag">${SL[s]||s}</span>`;
+ const owner=()=>E.me.role==='owner';
+ const perm=id=>{if(owner())return{e:true,a:true};if(E.me.role==='viewer')return{e:false,a:false};const m=M.find(x=>x.project_id===id&&x.user_id===E.me.id)||{};return{e:!!m.can_edit,a:!!m.can_approve}};
+ const call=async(n,a)=>{const r=await sb.rpc(n,a);if(r.error){alert('That action was not allowed or the input was invalid.');return null}return r.data===null?true:r.data};
+ const load=async()=>{const[p,m]=await Promise.all([sb.from('projects').select('*').order('created_at'),sb.from('project_members').select('*')]);P=p.data||[];M=m.data||[];if(!P.find(x=>x.id===cp))cp=P[0]?P[0].id:null};
+ const fill=fn=>{setTimeout(async()=>{const el=document.getElementById('wk');if(!el)return;await load();await fn(el)},0);return'<div id="wk">Loading…</div>'};
+ const sel=()=>`<p><label>Project <select class="fld" data-w="cp" style="max-width:20rem;display:inline-block">${P.map(p=>`<option value="${p.id}"${p.id===cp?' selected':''}>${esc(p.name)}</option>`).join('')}</select></label></p>`;
+ const none=()=>empty(owner()?'No projects':'No projects shared with you',owner()?'Create a project first.':'The owner will add you to a project.');
+ const fd=d=>d?new Date(d).toLocaleDateString():'';
+ const v=id=>document.getElementById(id);
+
+ views.overview=['Overview',()=>fill(async el=>{
+  if(!P.length){el.innerHTML=none();return}
+  const c=async(t,f)=>(await f(sb.from(t).select('id',{count:'exact',head:true}))).count||0;
+  const[d,r,t]=await Promise.all([c('documents',x=>x.neq('status','archived')),c('documents',x=>x.eq('status','awaiting_review')),c('tasks',x=>x.eq('status','open'))]);
+  el.innerHTML=`<div class="panel"><table><tbody><tr><td>Projects you can access</td><td><b>${P.length}</b></td></tr><tr><td>Active documents</td><td><b>${d}</b></td></tr><tr><td>Documents awaiting review</td><td><b>${r}</b></td></tr><tr><td>Open tasks</td><td><b>${t}</b></td></tr></tbody></table></div>`;
+ })];
+
+ views.projects=['Projects',()=>fill(async el=>{
+  let h='';
+  if(owner())h+=`<div class="panel"><h3>New project</h3><div class="row"><input class="fld" id="pn" placeholder="Name" maxlength="120" style="max-width:16rem"><input class="fld" id="pd" placeholder="Description (optional)" maxlength="1000" style="max-width:24rem"><button class="btn" data-w="newproj">Create project</button></div></div>`;
+  h+=P.length?`<div class="panel scroll"><table><thead><tr><th>Name</th><th>Description</th><th></th></tr></thead><tbody>${P.map(p=>`<tr><td>${esc(p.name)}</td><td>${esc(p.description)}</td><td><button class="btn alt" data-w="open" data-id="${p.id}">Open</button></td></tr>`).join('')}</tbody></table></div>`:none();
+  if(owner()&&cp){
+   const{data:pe}=await sb.from('profiles').select('id,email,role').eq('status','approved').neq('role','owner');
+   const mem=M.filter(m=>m.project_id===cp),name=id=>((pe||[]).find(x=>x.id===id)||{}).email||id;
+   const ck=(a,b)=>`<td><input type="checkbox"${a?' checked':''}> ${b}</td>`;
+   const free=(pe||[]).filter(x=>!mem.find(m=>m.user_id===x.id));
+   h+=`<div class="panel"><h3>Who can access: ${esc((P.find(x=>x.id===cp)||{}).name)}</h3>${sel()}<div class="scroll"><table><tbody>${mem.map(m=>`<tr data-u="${m.user_id}"><td>${esc(name(m.user_id))}</td>${ck(m.can_edit,'Can edit')}${ck(m.can_approve,'Can approve')}<td><button class="btn alt" data-w="mem">Save</button> <button class="btn alt" data-w="memrm">Remove</button></td></tr>`).join('')}${free.length?`<tr><td><select class="fld">${free.map(x=>`<option value="${x.id}">${esc(x.email)} (${x.role})</option>`).join('')}</select></td>${ck(false,'Can edit')}${ck(false,'Can approve')}<td><button class="btn" data-w="mem">Add person</button></td></tr>`:''}</tbody></table></div><p class="msg">Viewers can never edit or approve, even if boxes are ticked. Only approved accounts appear here.</p></div>`;
+  }
+  el.innerHTML=h;
+ })];
+
+ async function editor(el,pm){
+  let d={title:'',status:'draft'},vs=[];
+  if(ed.id){
+   const[a,b]=await Promise.all([sb.from('documents').select('*').eq('id',ed.id).maybeSingle(),sb.from('document_versions').select('*').eq('document_id',ed.id).order('version',{ascending:false})]);
+   if(!a.data){ed=null;return route()}
+   d=a.data;vs=b.data||[];
+  }
+  ed.versions=vs;
+  const s=d.status,B=(x,l,c='btn alt')=>`<button class="${c}" data-w="status" data-s="${x}">${l}</button> `;
+  let acts='';
+  if(ed.id){
+   if(pm.e&&(s==='draft'||s==='changes_requested'))acts+=B('in_progress','Mark in progress');
+   if(pm.e&&['draft','in_progress','changes_requested'].includes(s))acts+=B('awaiting_review','Submit for review','btn');
+   if(pm.a&&s==='awaiting_review')acts+=B('approved','Approve','btn')+B('changes_requested','Request changes');
+   if(pm.e&&s!=='archived')acts+=B('archived','Archive');
+   if(pm.e&&s==='archived')acts+=B('draft','Restore');
+  }
+  el.innerHTML=`<div class="panel"><p><button class="btn alt" data-w="closedoc">Back to documents</button> ${ed.id?tag(s):''}</p><label for="dt">Title</label><input class="fld" id="dt" maxlength="200" value="${esc(d.title)}"${pm.e?'':' disabled'}><label for="db">Content</label><textarea class="fld" id="db" rows="14"${pm.e?'':' readonly'}>${esc(vs[0]?vs[0].body:'')}</textarea><div class="row">${pm.e&&s!=='archived'?'<button class="btn" data-w="savedoc">Save as new version</button>':''}${acts}</div>${pm.e&&s==='approved'?'<p class="msg">Saving an approved document returns it to In Progress.</p>':''}${vs.length?`<h3>Version history</h3><div class="scroll"><table><tbody>${vs.map(x=>`<tr><td>Version ${x.version}</td><td>${fd(x.created_at)}</td><td><button class="btn alt" data-w="ver" data-v="${x.version}">Load into editor</button></td></tr>`).join('')}</tbody></table></div>`:''}</div>`;
+  if(E.W&&E.W.hook)E.W.hook(el,d);
+ }
+ views.documents=['Documents and reports',()=>fill(async el=>{
+  if(!cp){el.innerHTML=none();return}
+  const pm=perm(cp);
+  if(ed)return editor(el,pm);
+  let qy=sb.from('documents').select('*').eq('project_id',cp).order('updated_at',{ascending:false});
+  if(q)qy=qy.ilike('title','%'+q.replace(/[%_,()]/g,' ')+'%');
+  const{data}=await qy;
+  el.innerHTML=sel()+`<div class="panel"><div class="row" style="margin:0 0 1rem"><input class="fld" id="sq" placeholder="Search titles" value="${esc(q)}" style="max-width:18rem"><button class="btn alt" data-w="search">Search</button>${pm.e?'<button class="btn" data-w="newdoc">New document</button>':''}</div>${(data||[]).length?`<div class="scroll"><table><thead><tr><th>Title</th><th>Status</th><th>Version</th><th>Updated</th><th></th></tr></thead><tbody>${data.map(x=>`<tr><td>${esc(x.title)}</td><td>${tag(x.status)}</td><td>${x.current_version}</td><td>${fd(x.updated_at)}</td><td><button class="btn alt" data-w="opendoc" data-id="${x.id}">Open</button></td></tr>`).join('')}</tbody></table></div>`:`<p>${q?'No documents match.':'No documents in this project yet.'}</p>`}</div>`;
+ })];
+
+ views.tasks=['Tasks',()=>fill(async el=>{
+  if(!cp){el.innerHTML=none();return}
+  const pm=perm(cp);
+  const[t,pp]=await Promise.all([sb.from('tasks').select('*').eq('project_id',cp).order('due_date',{ascending:true,nullsFirst:false}),sb.rpc('project_people',{p:cp})]);
+  T=t.data||[];const people=pp.data||[],who=id=>(people.find(x=>x.id===id)||{}).email||'Unassigned';
+  el.innerHTML=sel()+(pm.e?`<div class="panel"><h3>New task</h3><div class="row" style="margin-top:0"><input class="fld" id="tt" placeholder="Task" maxlength="200" style="max-width:18rem"><select class="fld" id="to" style="max-width:14rem"><option value="">Unassigned</option>${people.map(x=>`<option value="${x.id}">${esc(x.email)}</option>`).join('')}</select><input class="fld" id="td" type="date" style="max-width:10rem"><button class="btn" data-w="newtask">Add task</button></div></div>`:'')+`<div class="panel">${T.length?`<div class="scroll"><table><thead><tr><th>Task</th><th>Owner</th><th>Due</th><th>Status</th><th></th></tr></thead><tbody>${T.map(x=>`<tr><td>${esc(x.title)}</td><td>${esc(who(x.owner_id))}</td><td>${x.due_date||''}</td><td>${x.status==='done'?'Done':'Open'}</td><td>${pm.e?`<button class="btn alt" data-w="tog" data-id="${x.id}">${x.status==='done'?'Reopen':'Mark done'}</button>`:''}</td></tr>`).join('')}</tbody></table></div>`:'<p>No tasks in this project yet.</p>'}</div>`;
+ })];
+
+ E.W={fill,sel,none,perm,call,v,tag,cp:()=>cp,projects:()=>P};dispatchEvent(new Event('eois-work'));
+ document.addEventListener('change',e=>{const t=e.target;if(t.dataset&&t.dataset.w==='cp'){cp=t.value;ed=null;q='';route()}});
+ document.addEventListener('click',async e=>{
+  const t=e.target.closest('[data-w]');if(!t||t.tagName==='SELECT')return;
+  const w=t.dataset.w,tr=t.closest('tr');let r=true;
+  if(w==='newproj')r=await call('create_project',{p_name:v('pn').value,p_description:v('pd').value});
+  else if(w==='open'){cp=t.dataset.id;ed=null;q='';location.hash='#/documents';return}
+  else if(w==='mem'||w==='memrm'){const c=tr.querySelectorAll('input[type=checkbox]'),u=tr.dataset.u||tr.querySelector('select').value;r=await call('set_project_member',{p_project:cp,p_user:u,p_edit:c[0].checked,p_approve:c[1].checked,p_remove:w==='memrm'})}
+  else if(w==='newdoc'){ed={}}
+  else if(w==='opendoc'){ed={id:t.dataset.id}}
+  else if(w==='closedoc'){ed=null}
+  else if(w==='search'){q=v('sq').value.trim()}
+  else if(w==='ver'){const x=ed.versions.find(y=>String(y.version)===t.dataset.v);if(x)v('db').value=x.body;return}
+  else if(w==='savedoc'){r=await call('save_document',{p_project:cp,p_doc:ed.id||null,p_title:v('dt').value,p_body:v('db').value});if(r&&r!==true)ed={id:r}}
+  else if(w==='status')r=await call('set_document_status',{p_doc:ed.id,p_status:t.dataset.s});
+  else if(w==='newtask')r=await call('save_task',{p_project:cp,p_task:null,p_title:v('tt').value,p_owner:v('to').value||null,p_due:v('td').value||null,p_status:'open'});
+  else if(w==='tog'){const x=T.find(y=>y.id===t.dataset.id);if(x)r=await call('save_task',{p_project:cp,p_task:x.id,p_title:x.title,p_owner:x.owner_id,p_due:x.due_date,p_status:x.status==='done'?'open':'done'})}
+  else return;
+  if(r)route();
+ });
+ route();
+}
+addEventListener('eois-ready',init);init();
+})();
+
+(()=>{
+let started=false;
+function init(){
+ const E=window.EOIS;if(started||!E||!E.W)return;started=true;
+ const W=E.W,sb=E.sb,esc=E.esc,v=W.v;
+ const ST=[['ATLAS','Drafts the document from the sources you supply.','Paste or write your source material.'],['VERITY','Checks facts, calculations, completeness and source conflicts.','Paste the draft to check, with its sources.'],['SENTINEL','Identifies risks, missing information and unclear accountability.','Paste the checked draft.'],['FORGE','Applies supported revisions and records the changes.','Paste the draft and the findings to apply.'],['ORION','Assesses final readiness and flags items for human review.','Paste the revised draft and the change record.']];
+ const SN={in_progress:'In progress',completed:'Completed, awaiting your review',accepted:'Accepted'};
+ const fdt=d=>d?new Date(d).toLocaleString():'';
+ let fd=null,fr=null,rd=null;
+
+ views.workflow=['AI documentation workflow',()=>W.fill(async el=>{
+  const cp=W.cp();
+  if(!cp){el.innerHTML=W.none();return}
+  const pm=W.perm(cp);
+  const{data:docs}=await sb.from('documents').select('id,title').eq('project_id',cp).neq('status','archived').order('updated_at',{ascending:false});
+  if(!(docs||[]).find(d=>d.id===fd)){fd=docs&&docs[0]?docs[0].id:null;fr=null}
+  let h=W.sel()+'<p class="note">Manual workflow. You start each stage, supply the input, write or paste the output, review it, and accept it before the next stage can start. No AI service is connected, so no stage runs by itself.</p>';
+  if(!fd){el.innerHTML=h+'<p>Create a document in this project first.</p>';return}
+  h+=`<p><label>Document <select class="fld" data-f="doc" style="max-width:24rem;display:inline-block">${docs.map(d=>`<option value="${d.id}"${d.id===fd?' selected':''}>${esc(d.title)}</option>`).join('')}</select></label></p>`;
+  const[r,pp]=await Promise.all([sb.from('workflow_stages').select('*').eq('document_id',fd).order('started_at'),sb.rpc('project_people',{p:cp})]);
+  const runs=r.data||[],people=pp.data||[],who=id=>(people.find(x=>x.id===id)||{}).email||'Unknown';
+  const latest=n=>runs.filter(x=>x.stage===n).sort((a,b)=>b.version-a.version)[0];
+  h+=`<div class="panel scroll"><table><thead><tr><th>Stage</th><th>Status</th><th></th></tr></thead><tbody>${ST.map(([n,d],i)=>{
+   const l=latest(n),pv=i?latest(ST[i-1][0]):null,open=l&&l.status!=='accepted',can=pm.e&&!open&&(i===0||(pv&&pv.status==='accepted'));
+   return`<tr><td><b>${n}</b><br><small>${d}</small></td><td>${l?`Run ${l.version}: ${SN[l.status]}`:'Not started'}</td><td>${l?`<button class="btn alt" data-f="run" data-id="${l.id}">Open</button> `:''}${can?`<button class="btn" data-f="start" data-s="${n}">${l?'Start new run':'Start'}</button>`:''}</td></tr>`}).join('')}</tbody></table></div>`;
+  const run=runs.find(x=>x.id===fr);
+  if(run){
+   const ed=pm.e&&run.status==='in_progress',hint=ST.find(s=>s[0]===run.stage)[2];
+   h+=`<div class="panel"><h3>${run.stage}, run ${run.version}</h3><p>${SN[run.status]}. Started ${fdt(run.started_at)} by ${esc(who(run.author))}.${run.completed_at?' Completed '+fdt(run.completed_at)+'.':''}${run.accepted_at?' Accepted '+fdt(run.accepted_at)+' by '+esc(who(run.accepted_by))+'.':''}</p><p class="msg">${hint}</p>
+   <label for="fi">Input</label><textarea class="fld" id="fi" rows="7"${ed?'':' readonly'}>${esc(run.input)}</textarea>
+   <label for="fo">Output (written or pasted by you)</label><textarea class="fld" id="fo" rows="10"${ed?'':' readonly'}>${esc(run.output)}</textarea>
+   <div class="row">${ed?'<button class="btn alt" data-f="doctext">Insert current document text into input</button><button class="btn alt" data-f="save">Save draft</button><button class="btn" data-f="complete">Mark stage complete</button>':''}${pm.e&&run.status==='completed'?'<button class="btn" data-f="accept">Accept and continue</button><button class="btn alt" data-f="reject">Send back for rework</button>':''}${pm.e&&['ATLAS','FORGE'].includes(run.stage)&&run.status!=='in_progress'&&run.output?'<button class="btn alt" data-f="apply">Save output as new document version</button>':''}</div></div>`;
+  }else fr=null;
+  el.innerHTML=h;
+ })];
+
+ views.review=['Review and approval queue',()=>W.fill(async el=>{
+  const{data:docs}=await sb.from('documents').select('id,title,project_id,current_version,updated_at').eq('status','awaiting_review').order('updated_at');
+  let h='';
+  if(rd)h+=`<div class="panel"><h3>${esc(rd.title)}</h3><pre style="white-space:pre-wrap;font:inherit">${esc(rd.body)}</pre><button class="btn alt" data-f="closeread">Close</button></div>`;
+  if(!(docs||[]).length){el.innerHTML=h+empty('Nothing awaiting review','Documents submitted for review appear here.');return}
+  const ids=docs.map(d=>d.id),{data:st}=await sb.from('workflow_stages').select('document_id,status,version').eq('stage','ORION').in('document_id',ids);
+  const orion=id=>{const l=(st||[]).filter(x=>x.document_id===id).sort((a,b)=>b.version-a.version)[0];return l?l.status:'none'};
+  const pn=id=>(W.projects().find(p=>p.id===id)||{}).name||'';
+  h+=`<div class="panel scroll"><table><thead><tr><th>Document</th><th>Project</th><th>ORION readiness</th><th></th></tr></thead><tbody>${docs.map(d=>{const o=orion(d.id),pm=W.perm(d.project_id);return`<tr><td>${esc(d.title)}<br><small>Version ${d.current_version}</small></td><td>${esc(pn(d.project_id))}</td><td>${o==='accepted'?'ORION accepted':o==='none'?'ORION not run':'ORION not yet accepted'}</td><td><button class="btn alt" data-f="read" data-id="${d.id}">Read</button> ${pm.a?`<button class="btn" data-f="approve" data-id="${d.id}" data-o="${o}">Approve</button> <button class="btn alt" data-f="changes" data-id="${d.id}">Request changes</button>`:''}</td></tr>`}).join('')}</tbody></table></div>`;
+  el.innerHTML=h;
+ })];
+
+ addEventListener('change',e=>{const t=e.target;if(t.dataset&&t.dataset.f==='doc'){fd=t.value;fr=null;route()}});
+ document.addEventListener('click',async e=>{
+  const t=e.target.closest('[data-f]');if(!t||t.tagName==='SELECT')return;
+  const f=t.dataset.f;let r=true;
+  const body=async id=>{const{data}=await sb.from('document_versions').select('body').eq('document_id',id).order('version',{ascending:false}).limit(1);return data&&data[0]?data[0].body:''};
+  if(f==='run')fr=t.dataset.id;
+  else if(f==='start'){r=await W.call('start_stage',{p_doc:fd,p_stage:t.dataset.s,p_input:''});if(r&&r!==true)fr=r}
+  else if(f==='doctext'){v('fi').value=await body(fd);return}
+  else if(f==='save'||f==='complete')r=await W.call('save_stage_output',{p_run:fr,p_input:v('fi').value,p_output:v('fo').value,p_complete:f==='complete'});
+  else if(f==='accept'||f==='reject')r=await W.call('review_stage',{p_run:fr,p_accept:f==='accept'});
+  else if(f==='apply'){
+   if(!confirm('Save this stage output as a new version of the document? This returns approved or in-review documents to In Progress.'))return;
+   const[a,b]=await Promise.all([sb.from('documents').select('title').eq('id',fd).maybeSingle(),sb.from('workflow_stages').select('output').eq('id',fr).maybeSingle()]);
+   if(!a.data||!b.data)return;
+   r=await W.call('save_document',{p_project:W.cp(),p_doc:fd,p_title:a.data.title,p_body:b.data.output});
+  }
+  else if(f==='read'){rd={title:t.closest('tr').children[0].firstChild.textContent,body:await body(t.dataset.id)}}
+  else if(f==='closeread')rd=null;
+  else if(f==='approve'){
+   if(t.dataset.o!=='accepted'&&!confirm('ORION readiness has not been accepted for this document. Approve anyway?'))return;
+   r=await W.call('set_document_status',{p_doc:t.dataset.id,p_status:'approved'});
+  }
+  else if(f==='changes')r=await W.call('set_document_status',{p_doc:t.dataset.id,p_status:'changes_requested'});
+  else return;
+  if(r)route();
+ });
+ route();
+}
+addEventListener('eois-work',init);init();
+})();
+
+(()=>{
+let started=false;
+function init(){
+ const E=window.EOIS;if(started||!E||!E.W)return;started=true;
+ const W=E.W,sb=E.sb,esc=E.esc,v=W.v;
+ const fdt=d=>d?new Date(d).toLocaleString():'';
+ const OK={pdf:1,docx:1,xlsx:1,txt:1,csv:1,png:1,jpg:1,jpeg:1},MAX=10*1024*1024;
+ const nav=document.getElementById('nav'),t=nav&&nav.querySelector('[data-k=tasks]');
+ if(t&&!nav.querySelector('[data-k=sources]')){const a=document.createElement('a');a.href='#/sources';a.dataset.k='sources';a.textContent='Source files';t.after(a)}
+
+ W.hook=(el,d)=>{
+  if(!d.id)return;
+  const b=document.createElement('div');b.className='panel';
+  b.innerHTML=`<div class="row" style="margin-top:0"><button class="btn alt" data-x="export" data-id="${d.id}">Export saved version to PDF</button></div><h3>Comments and review notes</h3><div id="cm">Loading…</div>`;
+  el.append(b);comments(d.id);
+ };
+ async function comments(id){
+  const el=document.getElementById('cm');if(!el)return;
+  const[c,p]=await Promise.all([sb.from('comments').select('*').eq('document_id',id).order('created_at'),sb.rpc('project_people',{p:W.cp()})]);
+  const who=a=>((p.data||[]).find(x=>x.id===a)||{}).email||'Former member';
+  el.innerHTML=((c.data||[]).map(x=>`<p><b>${esc(who(x.author))}</b> <small>${fdt(x.created_at)}</small><br>${esc(x.body)}</p>`).join('')||'<p>No comments yet.</p>')+(E.me.role!=='viewer'?`<textarea class="fld" id="cb" rows="3" maxlength="4000"></textarea><div class="row"><button class="btn" data-x="comment" data-id="${id}">Add comment</button></div>`:'');
+ }
+ async function exportPdf(id){
+  const[a,b]=await Promise.all([sb.from('documents').select('*').eq('id',id).maybeSingle(),sb.from('document_versions').select('body,version,created_at').eq('document_id',id).order('version',{ascending:false}).limit(1)]);
+  if(!a.data||!b.data||!b.data[0])return alert('Nothing to export.');
+  if(!await W.call('log_export',{p_doc:id}))return;
+  const d=a.data,x=b.data[0],ok=d.status==='approved',w=window.open('','_blank');
+  if(!w)return alert('Allow pop-ups, then try again.');
+  w.document.write(`<!doctype html><meta charset="utf-8"><title>${esc(d.title)}</title><style>body{font:12pt/1.5 Georgia,serif;margin:2.5cm;color:#111}h1{font-size:20pt}.m{color:#555;font-size:10pt;border-bottom:1px solid #999;padding-bottom:6px;margin-bottom:18px}.w{color:#a00;font-weight:bold}pre{white-space:pre-wrap;font:inherit}</style><h1>${esc(d.title)}</h1><div class="m">Version ${x.version}, saved ${fdt(x.created_at)}. Status: ${esc(d.status.replace('_',' '))}.${ok?'':' <span class="w">NOT APPROVED. Do not distribute.</span>'}</div><pre>${esc(x.body)}</pre>`);
+  w.document.close();w.focus();setTimeout(()=>w.print(),300);
+ }
+
+ views.sources=['Source files',()=>W.fill(async el=>{
+  const cp=W.cp();if(!cp){el.innerHTML=W.none();return}
+  const pm=W.perm(cp);
+  const[f,p]=await Promise.all([sb.from('source_files').select('*').eq('project_id',cp).order('created_at',{ascending:false}),sb.rpc('project_people',{p:cp})]);
+  const who=a=>((p.data||[]).find(x=>x.id===a)||{}).email||'Former member',rows=f.data||[];
+  el.innerHTML=W.sel()+(pm.e?'<div class="panel"><h3>Upload a source file</h3><p class="msg">PDF, DOCX, XLSX, TXT, CSV, PNG or JPG, up to 10 MB. Files are private to people with access to this project. Files are not scanned for malware, so only upload files you trust.</p><input type="file" id="sf" accept=".pdf,.docx,.xlsx,.txt,.csv,.png,.jpg,.jpeg"><div class="row"><button class="btn" data-x="upload">Upload</button></div></div>':'')+`<div class="panel">${rows.length?`<div class="scroll"><table><thead><tr><th>File</th><th>Size</th><th>Uploaded by</th><th>Date</th><th></th></tr></thead><tbody>${rows.map(x=>`<tr><td>${esc(x.name)}</td><td>${Math.ceil(x.size_bytes/1024)} KB</td><td>${esc(who(x.uploaded_by))}</td><td>${fdt(x.created_at)}</td><td><button class="btn alt" data-x="dl" data-p="${esc(x.storage_path)}">Download</button></td></tr>`).join('')}</tbody></table></div>`:'<p>No source files in this project yet.</p>'}</div>`;
+ })];
+
+ views.audit=['Activity and audit log',()=>W.fill(async el=>{
+  if(E.me.role!=='owner'){el.innerHTML='<div class="panel"><p>Only the workspace owner can view the audit log.</p></div>';return}
+  const[a,p]=await Promise.all([sb.from('audit_log').select('*').order('at',{ascending:false}).limit(200),sb.from('profiles').select('id,email')]);
+  const who=id=>id?((p.data||[]).find(x=>x.id===id)||{}).email||id:'System',rows=a.data||[];
+  el.innerHTML=rows.length?`<div class="panel scroll"><p class="msg">Latest 200 events. Sign-in events are kept by Supabase (Authentication > Logs), not here.</p><table><thead><tr><th>When</th><th>Who</th><th>Action</th><th>Target</th><th>Details</th></tr></thead><tbody>${rows.map(x=>`<tr><td>${fdt(x.at)}</td><td>${esc(who(x.actor))}</td><td>${esc(x.action)}</td><td><small>${esc(x.target)}</small></td><td><small>${esc(x.details?JSON.stringify(x.details):'')}</small></td></tr>`).join('')}</tbody></table></div>`:'<div class="panel empty"><h3>No recorded events</h3></div>';
+ })];
+
+ document.addEventListener('click',async e=>{
+  const b=e.target.closest('[data-x]');if(!b)return;
+  const x=b.dataset.x;let r=true;
+  if(x==='export'){await exportPdf(b.dataset.id);return}
+  if(x==='comment'){const s=v('cb').value;if(!s.trim())return;r=await W.call('add_comment',{p_doc:b.dataset.id,p_body:s});if(r)comments(b.dataset.id);return}
+  if(x==='dl'){const{data,error}=await sb.storage.from('sources').createSignedUrl(b.dataset.p,60);if(error)return alert('You do not have access to that file.');window.open(data.signedUrl,'_blank','noopener');return}
+  if(x==='upload'){
+   const f=v('sf').files[0],cp=W.cp();if(!f)return;
+   const ext=(f.name.split('.').pop()||'').toLowerCase();
+   if(!OK[ext]||f.size<1||f.size>MAX)return alert('That file type or size is not allowed.');
+   const path=cp+'/'+crypto.randomUUID()+'-'+f.name.replace(/[^A-Za-z0-9._-]/g,'_').slice(0,100);
+   const u=await sb.storage.from('sources').upload(path,f,{contentType:f.type||undefined,upsert:false});
+   if(u.error)return alert('Upload failed or is not allowed.');
+   r=await W.call('register_source',{p_project:cp,p_path:path,p_name:f.name.slice(0,200),p_size:f.size,p_mime:f.type||''});
+   if(r)route();
+  }
+ });
+ route();
+}
+addEventListener('eois-work',init);init();
+})();
+
+</script>
+</body>
+</html>
